@@ -20,7 +20,7 @@ SET SaleDateConv = CONVERT(DATE, SaleDate)
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
--- Populating the property address data
+-- Populating the null cells in property address with data
 -- checking for duplicate parcelid
 SELECT *
 FROM DataCleaning..NashvilleHousing
@@ -128,10 +128,10 @@ FROM NashvilleHousing
 -- Updating the table
 UPDATE NashvilleHousing
 SET SoldAsVacant = CASE
-						WHEN SoldAsVacant = 'Y' THEN 'Yes'
-						WHEN SoldAsVacant = 'N' THEN 'No'
-						ELSE SoldAsVacant
-					END
+			WHEN SoldAsVacant = 'Y' THEN 'Yes'
+			WHEN SoldAsVacant = 'N' THEN 'No'
+			ELSE SoldAsVacant
+		   END
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -141,11 +141,11 @@ WITH Duplic
 AS
 (SELECT *,
 	ROW_NUMBER() OVER (PARTITION BY ParcelID,
-									PropertyAddress,
-									SalePrice,
-									SaleDate,
-									LegalReference 
-						ORDER BY UniqueID) AS row_num
+					PropertyAddress,
+					SalePrice,
+					SaleDate,
+					LegalReference 
+			   ORDER BY UniqueID) AS row_num
 FROM NashvilleHousing
 )
 DELETE
